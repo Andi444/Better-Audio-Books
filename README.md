@@ -42,3 +42,17 @@ in i Git-historiken. Det här testbygget publicerar inga binärer automatiskt.
 Startfilen väljer Apple-chipets egna Python även när LaunchServices startar
 skalet genom Rosetta. Mac-fönstret använder direkt JavaScript-anrop vid
 stängning, så att inställningar kan sparas utan CSP-blockerad eval.
+
+## Verifierad Mac-körning 2026-10-08
+
+BAB 1.6.2 klarade båda jobben: Apple-chip arm64 och Intel x86_64.
+Installation med Apples verktyg, native bibliotek, båda offlinerösterna,
+ordtider, färdigt Cocoa-fönster, sparad volym vid det riktiga stängningsanropet
+och synligt appfönster via LaunchServices blev godkända.
+
+Resultat: https://github.com/Andi444/Better-Audio-Books/actions/runs/37785058573
+
+Testerna bygger egna paket på respektive Mac. Den dubbla installationsfil
+som byggs på Windows är fortfarande ett separat paket som behöver provas
+på en användares Mac. Signering, Gatekeeper och hörbar ljudutmatning ingår
+inte i dessa automatiska tester.
