@@ -11,7 +11,7 @@ Mac-tjänst, cache eller lagring av testartefakter används.
 
 Bygget hämtar exakt hash-låsta Python-/röstbibliotek från officiella utgivare.
 Röstmodellerna hämtas från Piper och verifieras både före och efter BAB:s
-ändring för ordmarkering. Programkoden motsvarar BAB 1.6.1. Testpaketet
+ändring för ordmarkering. Programkoden motsvarar BAB 1.6.2. Testpaketet
 byggs med Apples pkgbuild på den riktiga Mac-testmaskinen. Varje jobb
 innehåller bara sin egen arkitektur, till skillnad från den tidigare dubbla
 Windows-byggda installationsfilen. Därför är det inte samma installationsfil.
@@ -36,3 +36,9 @@ Beroenden har egna licenser som följer med i de verifierade arkiven.
 
 Installationsfiler, egna ljudcachefiler och privata böcker ska inte läggas
 in i Git-historiken. Det här testbygget publicerar inga binärer automatiskt.
+
+## Rättning i 1.6.2
+
+Startfilen väljer Apple-chipets egna Python även när LaunchServices startar
+skalet genom Rosetta. Mac-fönstret använder direkt JavaScript-anrop vid
+stängning, så att inställningar kan sparas utan CSP-blockerad eval.

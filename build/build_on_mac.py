@@ -1,7 +1,7 @@
-"""Recreate the BAB 1.6.1 native payload from hash-locked public inputs.
+"""Recreate the BAB 1.6.2 native payload from hash-locked public inputs.
 
 No credentials, paid services, or signing are involved. Only the current
-runner's architecture is included; all app sources and models match 1.6.1.
+runner's architecture is included; all app sources and models match 1.6.2.
 """
 from pathlib import Path, PurePosixPath
 import base64
@@ -118,12 +118,12 @@ def main():
     for row in json.loads((BUILD/'models.json').read_text()):
         original=fetch(row['url'],row['original_sha256']).read_bytes()
         data=patch_model(original,base64.b64decode(row['alignment_output_field_base64']))
-        assert hashlib.sha256(data).hexdigest()==row['patched_sha256'], 'Patched model differs from BAB 1.6.1'
+        assert hashlib.sha256(data).hexdigest()==row['patched_sha256'], 'Patched model differs from BAB 1.6.2'
         (RES/'app/models'/row['name']).write_bytes(data)
         print('Verified original and BAB model:',row['name'],flush=True)
     info={'CFBundleDevelopmentRegion':'sv','CFBundleDisplayName':'Better Audio Books',
           'CFBundleName':'BAB','CFBundleIdentifier':'se.betteraudiobooks.bab',
-          'CFBundleVersion':'1.6.1','CFBundleShortVersionString':'1.6.1',
+          'CFBundleVersion':'1.6.2','CFBundleShortVersionString':'1.6.2',
           'CFBundleExecutable':'Better Audio Books','CFBundlePackageType':'APPL','CFBundleIconFile':'BAB.icns',
           'LSMinimumSystemVersion':'13.0','NSHighResolutionCapable':True,
           'NSRequiresAquaSystemAppearance':False,'CFBundleSupportedPlatforms':['MacOSX']}
@@ -132,7 +132,7 @@ def main():
     executable=CONTENTS/'MacOS/Better Audio Books';executable.parent.mkdir()
     executable.write_bytes((BUILD/'mac-app-launcher.sh').read_bytes().replace(b'\r\n',b'\n'));executable.chmod(0o755)
     subprocess.run(['pkgbuild','--component',str(APP),'--install-location','/Applications',
-                    '--identifier','se.betteraudiobooks.bab.pkg','--version','1.6.1',str(STAGE/'BAB-native-test.pkg')],check=True)
+                    '--identifier','se.betteraudiobooks.bab.pkg','--version','1.6.2',str(STAGE/'BAB-native-test.pkg')],check=True)
 
 
 if __name__=='__main__':main()

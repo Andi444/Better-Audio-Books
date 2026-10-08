@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 import sys
 
-VERSION = '1.6.1'
+VERSION = '1.6.2'
 
 
 def data_directory(platform=None, environ=None, home=None):
