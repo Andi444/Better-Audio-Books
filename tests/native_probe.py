@@ -76,12 +76,19 @@ def cocoa():
             print(result['error'], flush=True)
         finally:
             if windows:
+                if result.get('ready'):
+                    windows[0].run_js('setVolume(.37); void 0;')
                 windows[0].destroy()
     def start(**kwargs):
         return original_start(func=inspect_window, **kwargs)
     webview.create_window, webview.start = create, start
     mac_launcher.main()
     assert result.get('ready') and not result.get('error'), result
+    import server
+    with server.database() as db:
+        settings = json.loads(db.execute('SELECT value FROM settings WHERE id=1').fetchone()['value'])
+    assert settings['volume'] == .37, 'Closing the native window did not save settings'
+    print('CLOSE SETTINGS OK', flush=True)
 
 
 assert sys.platform == 'darwin', 'Native Mac tests must run on macOS'
