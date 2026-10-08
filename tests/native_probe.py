@@ -78,7 +78,12 @@ def cocoa():
             if windows:
                 if result.get('ready'):
                     windows[0].run_js('setVolume(.37); void 0;')
-                windows[0].destroy()
+                    # NSWindow.close (used by destroy) bypasses windowShouldClose.
+                    # performClose is the user's native close-button action.
+                    from PyObjCTools import AppHelper
+                    AppHelper.callAfter(windows[0].native.performClose_, None)
+                else:
+                    windows[0].destroy()
     def start(**kwargs):
         return original_start(func=inspect_window, **kwargs)
     webview.create_window, webview.start = create, start
