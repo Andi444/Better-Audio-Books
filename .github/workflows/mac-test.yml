@@ -1,0 +1,40 @@
+name: BAB Mac tests (public repositories only)
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: Public release containing BAB-Mac-Installation-1.6.1-Testversion.pkg
+        required: true
+        default: bab-1.6.1-test
+
+permissions:
+  contents: read
+
+jobs:
+  mac-test:
+    # Standard hosted runners are free in public repositories. No private jobs.
+    if: ${{ github.event.repository.private == false && github.event.repository.visibility == 'public' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-15, macos-15-intel]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download the exact test installer
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.release_tag }}
+        run: |
+          set -eu
+          mkdir -p "$RUNNER_TEMP/bab-download"
+          gh release download "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --pattern 'BAB-Mac-Installation-1.6.1-Testversion.pkg' --dir "$RUNNER_TEMP/bab-download"
+          python3 tests/check_download.py "$RUNNER_TEMP/bab-download/BAB-Mac-Installation-1.6.1-Testversion.pkg"
+      - name: Install in this disposable Mac test machine
+        run: |
+          set -eu
+          sudo installer -pkg "$RUNNER_TEMP/bab-download/BAB-Mac-Installation-1.6.1-Testversion.pkg" -target /
+      - name: Native imports, offline voices, Cocoa and Finder launch
+        run: python3 tests/run_mac_checks.py
+      # Logs and summary only: no paid runners, caches or artifact storage.
