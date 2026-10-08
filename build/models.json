@@ -1,0 +1,18 @@
+[
+  {
+    "name": "sv_SE-alma-medium.onnx",
+    "url": "https://huggingface.co/rhasspy/piper-voices/resolve/main/sv/sv_SE/alma/medium/sv_SE-alma-medium.onnx",
+    "original_sha256": "f75455eb6afeb1db9e2905d5bd7e4115afcd3710e0d399b6a40981766d32fedc",
+    "original_md5": "93c03e7c0e2f21e78d123a3ee82d54c1",
+    "patched_sha256": "6eb0ece01960558115b4266ca3835e6256a8d1c728ddb8fda10276a290970053",
+    "alignment_output_field_base64": "YhAKDi9DZWlsX291dHB1dF8w"
+  },
+  {
+    "name": "sv_SE-nst-medium.onnx",
+    "url": "https://huggingface.co/rhasspy/piper-voices/resolve/main/sv/sv_SE/nst/medium/sv_SE-nst-medium.onnx",
+    "original_sha256": "df011f56825a59dd1efc080c38a65a1ef70407e60f63050e9246f43a3d7e471e",
+    "original_md5": "20266cf58e93ca2140444b77398aea04",
+    "patched_sha256": "e04af2dfd39fb812870d0e4e339ec6b16c7978fbac499ae51784aebbc22011f6",
+    "alignment_output_field_base64": "YhAKDi9DZWlsX291dHB1dF8w"
+  }
+]

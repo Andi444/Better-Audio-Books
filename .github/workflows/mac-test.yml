@@ -1,18 +1,13 @@
-name: BAB Mac tests (public repositories only)
+name: BAB free native Mac tests
 on:
+  push:
+    branches: [main]
+    paths: ['app/**', 'build/**', 'tests/**', '.github/workflows/mac-test.yml']
   workflow_dispatch:
-    inputs:
-      release_tag:
-        description: Public release containing BAB-Mac-Installation-1.6.1-Testversion.pkg
-        required: true
-        default: bab-1.6.1-test
-
 permissions:
   contents: read
-
 jobs:
   mac-test:
-    # Standard hosted runners are free in public repositories. No private jobs.
     if: ${{ github.event.repository.private == false && github.event.repository.visibility == 'public' }}
     strategy:
       fail-fast: false
@@ -22,19 +17,10 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-      - name: Download the exact test installer
-        env:
-          GH_TOKEN: ${{ github.token }}
-          RELEASE_TAG: ${{ inputs.release_tag }}
-        run: |
-          set -eu
-          mkdir -p "$RUNNER_TEMP/bab-download"
-          gh release download "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --pattern 'BAB-Mac-Installation-1.6.1-Testversion.pkg' --dir "$RUNNER_TEMP/bab-download"
-          python3 tests/check_download.py "$RUNNER_TEMP/bab-download/BAB-Mac-Installation-1.6.1-Testversion.pkg"
-      - name: Install in this disposable Mac test machine
-        run: |
-          set -eu
-          sudo installer -pkg "$RUNNER_TEMP/bab-download/BAB-Mac-Installation-1.6.1-Testversion.pkg" -target /
-      - name: Native imports, offline voices, Cocoa and Finder launch
+      - name: Build the native payload from hash-locked BAB inputs
+        run: python3 build/build_on_mac.py
+      - name: Install into the disposable Mac test machine
+        run: sudo installer -pkg stage/BAB-native-test.pkg -target /
+      - name: Native dependencies, offline speech, Cocoa and Finder startup
         run: python3 tests/run_mac_checks.py
-      # Logs and summary only: no paid runners, caches or artifact storage.
+      # Only standard public runners; no cache, paid runners or artifact uploads.

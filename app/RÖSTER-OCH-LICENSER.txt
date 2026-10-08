@@ -1,0 +1,44 @@
+BAB 1.6 — svenska röster online och offline
+
+ONLINE
+Sofie (sv-SE-SofieNeural) och Mattias (sv-SE-MattiasNeural) används via
+Microsofts nätbaserade rösttjänst. Samma röstnamn, tonlägen och tempon som
+i tidigare onlineversioner. Inga nya onlineröster har lagts till.
+Anslutningen använder edge-tts 7.2.8 (LGPL-3.0); dess licens och övriga
+nätbiblioteks licenser medföljer i online_packages/*dist-info/.
+Vid onlineuppläsning skickas de aktuella textavsnitten till tjänsten.
+
+OFFLINE
+
+Piper 1.8.0, OHF-Voice / The Home Assistant Authors, GPL-3.0-or-later.
+eSpeak NG, commit 724808c, används av Pipers fonemiserare.
+Källkod och byggfiler för båda finns i sources. Licenstexter finns i respektive
+källarkiv och i offline_packages/*dist-info/. BAB:s Python-delar distribueras
+under GPL-3.0-or-later. Dessa och gränssnittets källkod finns i programmet.
+
+Alma (sv_SE-alma-medium): Yeager Sthlm, tränad på NST Swedish TTS Dataset,
+CC BY 4.0. https://huggingface.co/yeagersthlm/piper-voice-sv-alma
+Källa: https://huggingface.co/rhasspy/piper-voices/tree/main/sv/sv_SE/alma/medium
+Licens: https://creativecommons.org/licenses/by/4.0/
+
+NST (sv_SE-nst-medium): tränad av KBLab vid Kungliga biblioteket. Enligt
+modellkortet är datasetets licens CC0.
+Källa: https://huggingface.co/rhasspy/piper-voices/tree/main/sv/sv_SE/nst/medium
+Modellkorten medföljer i models. Ingen röstkloning används.
+
+Båda ONNX-filerna har fått ett extra utdatafält för tidsangivelser till
+ordmarkeringen. Vikterna är oförändrade. Ändringen gjordes för BAB.
+De 20 klangvarianterna per grundröst ändrar tonläge och tempo genom lokal
+omsampling av ljudet. De är inte 40 olika inspelade personer.
+
+ONNX Runtime, NumPy och övriga komponenter har sina licenser i offline_packages.
+Microsoft WebView2 har separat licens i WebView2-LICENSE.txt.
+Python-licensen ligger i runtime/LICENSE.txt.
+
+MAC-UTGÅVAN
+Mac använder samma svenska ONNX-modeller och gemensamma programkällkod.
+Piper 1.8.0, ONNX Runtime 1.22.1, NumPy 1.26.4 och pywebview 6.2.1 med
+PyObjC används. Licenser finns i mac-*/packages och respektive runtime.
+Python 3.12.15 kommer från Astrals python-build-standalone, release 20261003.
+Källor och SHA256 anges i runtime-provenance.json/BAB-dependencies.json.
+Mac-startfilen och plattformsstödet distribueras under GPL-3.0-or-later.

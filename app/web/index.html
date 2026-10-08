@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="sv">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BAB — Better Audio Books</title><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="/style.css"><script src="/core.js" defer></script><script src="/app.js" defer></script></head>
+<body>
+<header class="topbar">
+  <a class="brand" href="#" aria-label="Better Audio Books"><img src="/logo.svg" alt="BAB-logga" width="44" height="44"><span><strong>BAB<span class="brand-dot">.</span></strong><small>Better Audio Books</small></span></a>
+  <div class="top-caption">Din bok. Din röst. Ditt tempo.</div>
+  <div class="top-actions"><span class="local-label"><i></i> <span id="modeStatus">Offlineröster · utan internet</span></span><button id="libraryToggle" class="quiet mobile-panel-button">Bibliotek</button><button id="voicesToggle" class="quiet mobile-panel-button">Röster</button><button id="theme" class="quiet" aria-label="Byt mellan ljust och mörkt tema" title="Byt tema">◐</button><button id="quit" class="quiet" title="Avsluta programmet">Avsluta</button></div>
+</header>
+<main class="workspace">
+<aside class="library panel">
+  <div class="eyebrow">DITT LÄSRUM</div><div class="section-title"><h2>Bibliotek</h2><span id="bookCount" class="count">0</span></div>
+  <button id="newBook" class="primary full"><span>＋</span> Lägg till en bok</button>
+  <label class="search"><span>⌕</span><input id="bookSearch" type="search" placeholder="Sök i biblioteket" aria-label="Sök i biblioteket"></label>
+  <div id="bookList" class="book-list"></div>
+  <div class="library-bottom"><div class="small-mark">B A B</div><p>Plats för berättelser.<br>Och för en stund i lugn och ro.</p><button id="desktopShortcut" class="text-button">Skapa skrivbordsgenväg ↗</button><button id="backup" class="text-button">Spara säkerhetskopia ↗</button><button id="restore" class="text-button">Återställ böcker</button><input type="file" id="backupFile" accept=".json" hidden></div>
+</aside>
+<section class="reading-column">
+  <div class="reader-toolbar"><span id="readerLabel" class="eyebrow">LÄS & LYSSNA</span><div class="type-tools"><label class="font-picker" for="fontFamily">Typsnitt <select id="fontFamily"><option value="georgia">Georgia</option><option value="segoe">Segoe UI</option><option value="arial">Arial</option><option value="verdana">Verdana</option><option value="times">Times New Roman</option><option value="consolas">Consolas</option></select></label><span class="small-label">Textstorlek</span><button id="smaller" class="quiet" aria-label="Minska textstorlek">A−</button><button id="larger" class="quiet" aria-label="Öka textstorlek">A＋</button><span class="divider"></span><label class="follow"><input id="follow" type="checkbox" checked> Följ läsningen</label></div></div>
+  <article class="book-paper" id="paper">
+    <div class="book-heading"><div class="eyebrow" id="bookKicker">VÄLKOMMEN TILL BAB</div><h1 id="bookTitle">En stund för orden.</h1><div class="book-meta"><span id="bookMeta">Lägg till din text och låt berättelsen ta plats.</span><div><button id="editBook" class="text-button" hidden>Redigera</button><button id="deleteBook" class="text-button danger" hidden>Ta bort</button></div></div></div>
+    <div id="emptyState" class="empty-state"><div class="empty-symbol">Aa</div><h2>Läs med ögonen.<br>Lyssna med öronen.</h2><p>Klistra in en text eller öppna en textfil. Hela texten finns här, med en markering som följer rösten.</p><button id="emptyNew" class="primary">Lägg till din första bok <span>↗</span></button><button id="demo" class="text-button">Prova med en kort exempeltext</button><div class="empty-note">SVENSKA RÖSTER · DITT EGET TEMPO</div></div>
+    <div id="reader" class="reader" tabindex="0" aria-label="Bokens hela text. Klicka på ett ord för att läsa därifrån." hidden></div>
+    <div id="selection" class="selection" hidden><span id="selectedWord"></span><button id="readHere" class="primary">▶ Läs härifrån</button><button id="closeSelection" class="quiet" aria-label="Stäng ordval">×</button></div>
+  </article>
+  <div class="reading-hint"><span>↖</span> Klicka på ett ord och välj <strong>Läs härifrån</strong>.<span id="saveStatus">Sparas på datorn</span></div>
+</section>
+<aside class="voices panel">
+  <div class="eyebrow">GÖR BERÄTTELSEN DIN</div><div class="section-title"><h2>Välj berättarröst</h2></div>
+  <div class="segmented mode-picker" role="group" aria-label="Röstläge"><button id="offlineMode" class="active" aria-pressed="true">Offline</button><button id="onlineMode" aria-pressed="false">Online</button></div><p id="modeDescription" class="muted">På datorn · fungerar utan internet.</p>
+  <div class="segmented" role="group" aria-label="Röstkategori"><button id="femaleTab" class="active" aria-pressed="true">Kvinnliga <span>20</span></button><button id="maleTab" aria-pressed="false">Manliga <span>20</span></button></div>
+  <div id="voiceList" class="voice-list" role="group" aria-label="Välj klangvariant"></div>
+  <div class="voice-preview"><span class="small-label">VALD RÖST</span><strong id="chosenVoice">Alma · Original</strong><button id="previewVoice" class="outline full">▷ Provlyssna</button></div>
+  <div class="voice-note"><span>Om rösterna</span><p id="voiceInfo">20 klangvarianter av Alma och 20 av NST. Båda svenska rösterna finns på datorn.</p><p id="voicePrivacy">Fungerar utan internet. Rösterna hålls laddade och ljudet sparas lokalt. Ett nytt avsnitt kan ta en kort stund att skapa.</p></div>
+</aside>
+</main>
+<footer class="player">
+  <div class="now-reading"><div class="sound-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></div><div><strong id="playingTitle">Din nästa läsupplevelse</strong><span id="status" role="status" aria-live="polite">Välj en bok för att börja</span></div></div>
+  <div class="playback"><div class="transport"><button id="back" class="quiet" title="Tillbaka 15 ord" aria-label="Tillbaka 15 ord">↶</button><button id="play" class="play-button" aria-label="Starta uppläsning" disabled>▶</button><button id="forward" class="quiet" title="Framåt 15 ord" aria-label="Framåt 15 ord">↷</button></div><div class="progress-row"><span id="progressText">0 %</span><input id="progress" type="range" min="0" max="100" value="0" aria-label="Läsposition" disabled><span id="wordProgress">0 / 0 ord</span></div></div>
+  <div class="player-options"><label class="volume-control" for="volume"><span>Ljud</span><input id="volume" type="range" min="0" max="100" value="80" aria-label="Ljudvolym"><output id="volumeValue">80 %</output></label><div class="speed-control"><label for="speed">Läshastighet</label><select id="speed"><option value="0.65">0,65×</option><option value="0.8">0,8×</option><option value="1" selected>1,0×</option><option value="1.15">1,15×</option><option value="1.3">1,3×</option><option value="1.5">1,5×</option><option value="1.75">1,75×</option><option value="2">2,0×</option></select></div></div>
+</footer>
+<dialog id="editor"><form id="bookForm"><div class="dialog-heading"><div><div class="eyebrow">DITT BIBLIOTEK</div><h2 id="editorTitle">Lägg till en bok</h2></div><button type="button" id="closeEditor" class="quiet" aria-label="Stäng">×</button></div><label class="field-label" for="titleInput">Bokens titel</label><input id="titleInput" maxlength="160" required placeholder="Vad vill du läsa?"><div class="text-label"><label class="field-label" for="textInput">Hela texten</label><button type="button" id="importText" class="text-button">↥ Öppna textfil (.txt)</button></div><textarea id="textInput" spellcheck="false" autocomplete="off" autocapitalize="off" required maxlength="1000000" placeholder="Klistra in din text här. Alla stycken och radbrytningar behålls."></textarea><input type="file" id="textFile" accept=".txt,text/plain" hidden><div class="editor-meta"><span id="textCount">0 ord</span><span>Upp till 1 000 000 tecken</span></div><p class="muted">Boken sparas på din dator. Offline skapas ljudet lokalt. Väljer du Online skickas avsnitten du lyssnar på till Microsofts rösttjänst.</p><div class="dialog-actions"><button type="button" id="cancelEditor" class="outline">Avbryt</button><button type="submit" id="saveBook" class="primary">Spara bok</button></div></form></dialog>
+<dialog id="confirmDialog"><div class="dialog-heading"><h2 id="confirmTitle">Ta bort boken?</h2></div><p id="confirmText"></p><div class="dialog-actions"><button id="confirmCancel" class="outline">Avbryt</button><button id="confirmYes" class="primary">Ta bort</button></div></dialog>
+<div id="toast" role="alert" hidden></div>
+</body></html>
