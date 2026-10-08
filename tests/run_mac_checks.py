@@ -48,7 +48,7 @@ def finder():
         observer = '''import sys,json
 sys.path.insert(0,sys.argv[1])
 import Quartz
-print(json.dumps([dict(pid=w.get('kCGWindowOwnerPID'),bounds=w.get('kCGWindowBounds'),layer=w.get('kCGWindowLayer')) for w in Quartz.CGWindowListCopyWindowInfo(Quartz.kCGWindowListOptionOnScreenOnly,0)]))'''
+print(json.dumps([dict(pid=int(w.get('kCGWindowOwnerPID',0)),bounds={str(k):float(v) for k,v in w.get('kCGWindowBounds',{}).items()},layer=int(w.get('kCGWindowLayer',-1))) for w in Quartz.CGWindowListCopyWindowInfo(Quartz.kCGWindowListOptionOnScreenOnly,0)]))'''
         packages = str(RESOURCES / ('mac-' + ARCH) / 'packages')
         deadline = time.monotonic() + 30
         while time.monotonic() < deadline:
