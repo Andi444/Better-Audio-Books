@@ -60,7 +60,7 @@ def cocoa():
         try:
             deadline = time.monotonic() + 25
             while time.monotonic() < deadline:
-                if windows[0].evaluate_js("typeof ready !== 'undefined' && ready === true && document.getElementById('reader') !== null"):
+                if windows[0].run_js("typeof ready !== 'undefined' && ready === true && document.getElementById('reader') !== null"):
                     break
                 time.sleep(.25)
             else:

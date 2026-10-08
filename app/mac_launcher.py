@@ -5,6 +5,7 @@ from pathlib import Path
 import secrets
 import sys
 import threading
+import time
 
 ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT))
@@ -32,10 +33,15 @@ def main():
     window = None
 
     def persist_and_close():
-        saved = threading.Event()
         try:
-            window.evaluate_js("(async()=>{if(typeof savePosition==='function'){await savePosition();await api('/api/settings',settingsSnapshot());}return true;})()", callback=lambda _: saved.set())
-            saved.wait(4)
+            # run_js uses WKWebView directly; evaluate_js wraps code in eval,
+            # which BAB's Content Security Policy correctly forbids.
+            window.run_js("(async()=>{window.__babCloseSaved=false;try{if(typeof savePosition==='function'){await savePosition();await api('/api/settings',settingsSnapshot());}}finally{window.__babCloseSaved=true;}})(); void 0;")
+            deadline = time.monotonic() + 4
+            while time.monotonic() < deadline:
+                if window.run_js("window.__babCloseSaved === true"):
+                    break
+                time.sleep(.05)
         except Exception:
             logging.exception('Could not save before closing the window')
         finally:
